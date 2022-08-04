@@ -65,4 +65,36 @@ export default class urlsController{
             });
         }
     };
+
+    static deleteUrl = async (request, response) => {
+        const {id} = request.params;
+        const {user} = response.locals;
+
+        try{
+            const url = await urlsRepository.getUrlById(id);
+
+            if(!url){
+                return response.status(404).json({
+                    error: 'URL not found'
+                });
+            }
+
+            if(url.userId !== user.id){
+                return response.status(401).json({
+                    error: 'Unouthorization'
+                });
+            }
+
+            await urlsRepository.deleteUrl(id);
+
+            response.status(204).json({
+                message: 'URL deleted'
+            });
+        }
+        catch(error){
+            response.status(500).json({
+                error: error.message
+            });
+        }
+    };
 }

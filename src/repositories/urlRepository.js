@@ -24,4 +24,9 @@ export default class urlsRepository{
         const query = sqlstring.format('UPDATE urls SET "visitCount" = "visitCount" + 1 WHERE "shortUrl" = ?', [shortUrl]);
         await db.query(query);
     };
+
+    static deleteUrl = async (id) => {
+        const query = sqlstring.format('SELECT * FROM urls WHERE id = ? ',[id]);
+        await db.query(query);
+    };
 }
