@@ -19,4 +19,11 @@ export default class UserRepository{
         const {rows} = await db.query(query);
         return rows[0];
     }
+
+    //pegando usuario pelo id
+    static getUserById = async (id) => {
+        const query = sqlstring.format('SELECT * FROM users WHERE id = ?', [id]);
+        const {rows} = await db.query(query);
+        return rows[0];
+    }
 }
