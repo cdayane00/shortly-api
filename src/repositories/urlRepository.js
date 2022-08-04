@@ -13,4 +13,15 @@ export default class urlsRepository{
         const {rows} = await db.query(query);
         return rows[0];
     };
+
+    static redirectUrl = async (shortUrl) => {
+        const query = sqlstring.format('SELECT * FROM urls WHERE "shortUrl" = ?', [shortUrl]);
+        const {rows} = await db.query(query);
+        return rows[0];
+    };
+
+    static visitCount = async (shortUrl) => {
+        const query = sqlstring.format('UPDATE urls SET "visitCount" = "visitCount" + 1 WHERE "shortUrl" = ?', [shortUrl]);
+        await db.query(query);
+    };
 }

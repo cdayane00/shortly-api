@@ -8,4 +8,5 @@ const urlRouter = Router();
 
 urlRouter.post('/urls/shorten', tokenMiddleware, schemaMiddleware(urlSchema), urlsController.creatUrl);
 urlRouter.get('/urls/:id', urlsController.getUrlById);
+urlRouter.get('/urls/open/:shortUrl', urlsController.redirectUrl);
 export default urlRouter;

@@ -45,4 +45,24 @@ export default class urlsController{
             });
         }
     };
+
+    static redirectUrl = async (request, response) => {
+        const {shortUrl} = request.params;
+
+        try{
+            const url = await urlsRepository.redirectUrl(shortUrl);
+            if(!url){
+                return response.status(404).json({
+                    error: 'URL not found'
+                });
+            }
+            await urlsRepository.visitCount(shortUrl);
+            response.redirect(url.url);
+        }
+        catch(error){
+            response.status(500).json({
+                error: error.message
+            });
+        }
+    };
 }
