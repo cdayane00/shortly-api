@@ -11,13 +11,9 @@ const tokenMiddleware = async (request, response, next) => {
             error: 'unauthorized1'
         });
     }
-    if(authorization.slice(0,7) !== 'Bearer '){
-        return response.status(422).json({
-            error: 'unauthorized2'
-        });
-    }
 
-    const token = authorization.split('')[1];
+    const token = authorization;
+    console.log(token);
     try{
         const decoded = jwt.verify(token, process.env.SECRET);
         const user = await userRepository.getUserById(decoded.userId);
