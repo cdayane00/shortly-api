@@ -1,6 +1,7 @@
 import userRepository from '../repositories/userRepositoy.js';
 import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
+import jwt from 'jsonwebtoken';
 dotenv.config();
 
 export default class UserController{
@@ -22,5 +23,40 @@ export default class UserController{
         }catch(error){
             response.status(500).json({error: error.message});
         }
+    }
+
+    static signin = async (request, response) => {
+
+        const {email, password} = request.body;
+
+        try{
+            const user = await userRepository.getUserByEmail(email);
+            if(!user){
+                return response.status(401).json({
+                    error: 'Email or password is incorrect'
+                });
+            }
+
+            const passwordValid = bcrypt.compareSync(password, user.password);
+            if(!passwordValid){
+                return response.staus(401).json({
+                    error: 'Password is incorrect'
+                });
+            }
+
+            const token = jwt.sign(
+                {userId: user.id},
+                process.env.SECRET,
+                {expiresIn: '1h'}
+            );
+            response.status(200).json({token});
+        }
+        catch(error){
+            response.status(500).json({
+                error: error.message
+            });
+        }
+
+
     }
 }
