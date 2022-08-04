@@ -7,5 +7,5 @@ import schemaMiddleware from '../middlewares/schemaMiddleware.js';
 const urlRouter = Router();
 
 urlRouter.post('/urls/shorten', tokenMiddleware, schemaMiddleware(urlSchema), urlsController.creatUrl);
-
+urlRouter.get('/urls/:id', urlsController.getUrlById);
 export default urlRouter;

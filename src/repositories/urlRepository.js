@@ -7,4 +7,10 @@ export default class urlsRepository{
         const {rows} = await db.query(query);
         return rows[0];
     };
+
+    static getUrlById = async (id) => {
+        const query =  sqlstring.format('SELECT * FROM urls WHERE id = ?',[id]);
+        const {rows} = await db.query(query);
+        return rows[0];
+    };
 }
