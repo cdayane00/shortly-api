@@ -47,4 +47,21 @@ export default class UserRepository{
             const {rows} = await db.query(query);
             return rows[0];
     };
+
+    static getUsersVisitCountRanking = async () => {
+        const query = sqlstring.format(
+            `SELECT users.id,
+            users.name,
+            COUNT(urls.id) AS "linksCount",
+            COALESCE(SUM(urls."visitCount"), 0) AS "visitCount"
+            FROM users
+            LEFT JOIN urls ON urls."userId" = users.id
+            GROUP BY users.id, users.name
+            ORDER BY "visitCount" DESC, "linksCount" DESC
+            LIMIT 10`
+        );
+
+        const {rows} = await db.query(query);
+        return rows;
+    }
 }

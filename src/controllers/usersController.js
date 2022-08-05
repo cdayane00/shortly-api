@@ -33,4 +33,16 @@ export default class usersController{
             });
         }
     };
+
+    static getRanking = async (request, response) => {
+        try{
+            const users = await userRepository.getUsersVisitCountRanking();
+            response.status(200).json(users);
+        }
+        catch(error){
+            response.status(500).json({
+                error: error.message
+            });
+        }
+    };
 }
