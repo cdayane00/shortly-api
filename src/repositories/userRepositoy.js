@@ -26,4 +26,25 @@ export default class UserRepository{
         const {rows} = await db.query(query);
         return rows[0];
     }
+
+    static getUserByIdUrl = async (id) => {
+        const query = sqlstring.format(
+            `SELECT users.id,
+            users.name, 
+            SUM(urls."visitCount") AS "visitCount",
+            json_agg(json_build_object(
+                'id', urls.id,
+                'url', urls.url,
+                'shortUrl', urls."shortUrl",
+                'visitCount', urls."visitCount"
+            )) AS "shortenedUrls"
+            FROM users 
+            LEFT JOIN urls ON urls."userId" = users.id
+            WHERE users.id = ? 
+            GROUP BY users.id, users.name`,
+            [id]);
+        
+            const {rows} = await db.query(query);
+            return rows[0];
+    };
 }

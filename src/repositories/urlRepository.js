@@ -26,7 +26,7 @@ export default class urlsRepository{
     };
 
     static deleteUrl = async (id) => {
-        const query = sqlstring.format('SELECT * FROM urls WHERE id = ? ',[id]);
+        const query = sqlstring.format('DELETE FROM urls WHERE id = ?',[id]);
         await db.query(query);
     };
 }

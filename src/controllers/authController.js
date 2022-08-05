@@ -39,7 +39,7 @@ export default class UserController{
 
             const passwordValid = bcrypt.compareSync(password, user.password);
             if(!passwordValid){
-                return response.staus(401).json({
+                return response.status(401).json({
                     error: 'Password is incorrect'
                 });
             }
